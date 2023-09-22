@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Live GPS Tracking</title>
-    <!-- Include Leaflet.js and any necessary CSS/JS libraries here -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
     <div id="map" style="height: 500px;"></div>
@@ -11,7 +11,10 @@
     <button id="simulateButton">Simulate GPS</button>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
     <script>
+                
+        
         var map = L.map('map').setView([0, 0], 12);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -40,6 +43,7 @@
         });
 
         setInterval(updateCoordinates, 1000); // Update coordinates every second
+        
     </script>
 </body>
 </html>

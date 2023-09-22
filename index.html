@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live GPS Tracking</title>
+    <!-- Include Leaflet.js and any necessary CSS/JS libraries here -->
+</head>
+<body>
+    <div id="map" style="height: 500px;"></div>
+    
+    <button id="simulateButton">Simulate GPS</button>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([0, 0], 12);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var marker = L.marker([0, 0]).addTo(map);
+
+        function updateCoordinates() {
+            fetch('/get_gps_coordinates')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latitude && data.longitude) {
+                        marker.setLatLng([data.latitude, data.longitude]);
+                        map.panTo([data.latitude, data.longitude]);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        document.getElementById('simulateButton').addEventListener('click', function() {
+            fetch('/simulate_gps', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        });
+
+        setInterval(updateCoordinates, 1000); // Update coordinates every second
+    </script>
+</body>
+</html>
